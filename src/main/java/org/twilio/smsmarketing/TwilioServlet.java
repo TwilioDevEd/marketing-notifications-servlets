@@ -27,7 +27,7 @@ public class TwilioServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String phone = request.getParameter("From");
         String body = request.getParameter("Body");
@@ -59,7 +59,6 @@ public class TwilioServlet extends HttpServlet {
 
     private String processMessage(String message, Subscriber subscriber) {
         String output = "Sorry, we don't recognize that command. Available commands are: 'subscribe' or 'unsubscribe'.";
-        System.out.println(message);
 
         if (message.startsWith(TwilioServlet.SUBSCRIBE_COMMAND) || message.startsWith(TwilioServlet.UNSUBSCRIBE_COMMAND)) {
             subscriber.setSubscribed(message.startsWith(TwilioServlet.SUBSCRIBE_COMMAND));
