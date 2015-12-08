@@ -1,0 +1,121 @@
+<!DOCTYPE html><html><head><title>SMS and MMS Marketing Notifications</title><style>body, html {
+  height:100%;
+  width:100%;
+  padding:0;
+  margin:0;
+  overflow:hidden;
+  background-color:#ddd;
+}
+.wrapper {
+  height:100%;
+  width:100%;
+}</style><link rel="shortcut icon" href="//twilio.com/bundles/marketing/img/favicons/favicon.ico"><link rel="apple-touch-icon" href="//twilio.com/bundles/marketing/img/favicons/favicon_57.png"><link rel="apple-touch-icon" sizes="72x72" href="//twilio.com/bundles/marketing/img/favicons/favicon_72.png"><link rel="apple-touch-icon" sizes="114x114" href="//twilio.com/bundles/marketing/img/favicons/favicon_114.png"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"><link rel="stylesheet" href="viewsaurus.css"></head><body><div class="wrapper"><div id="viewsaurus" data-title="SMS and MMS Marketing Notifications"><div class="saurus-panes"><div class="saurus-prose"><div class="saurus-prose-header"><div class="title-outer"><span class="step-title">SMS and MMS Marketing Notifications</span></div></div><div class="saurus-nav-buttons"><div class="saurus-nav-button nav-overview"><div class="saurus-nav-button-inner"><i class="fa fa-fw fa-list"></i></div><div class="nav-divider"></div></div><div class="saurus-nav-button nav-previous"><div class="saurus-nav-button-inner"><a href=""> <i class="fa fa-fw fa-play fa-rotate-180"></i></a></div><div class="nav-divider"></div></div><div class="saurus-nav-button nav-next clickable"><div class="saurus-nav-button-inner"><a href="#1"> <i class="fa fa-fw fa-play"></i></a></div></div><div class="saurus-next-title"><span class="next-title-inner"></span></div></div><div class="saurus-progress-bar"></div><div class="saurus-start"><p>SMS and MMS messages are a personal way to engage with users, offering a much higher open rate than e-mail and more impact than a tweet. Learn how to engage customers in a mobile marketing campaign using SMS and MMS messages.</p><a href="#0">Start Tutorial</a></div><div class="saurus-content"><div data-title="Introduction" data-file="src/main/webapp/WEB-INF/web.xml" data-format="xml" class="step"><h2 id="sms-and-mms-marketing-notifications">SMS and MMS Marketing Notifications</h2>
+<p>Ready to implement SMS and MMS marketing notifications? Here&#39;s how it works
+at a high level:</p>
+<ol>
+<li>A user you&#39;d like to reach sends an SMS text message to a Twilio phone
+number you advertise in print, online, or in TV advertising.</li>
+<li>Your application confirms that the user wants to receive SMS and MMS
+notifications from your application.</li>
+<li>An administrator or marketing campaign manager uses a web form to craft a
+message that will go out to all subscribers via SMS/MMS message.</li>
+</ol>
+<h2 id="building-blocks">Building Blocks</h2>
+<p>To get this done, you&#39;ll be working with the following Twilio APIs:</p>
+<ul>
+<li><a href="//www.local.twilio.com/docs/api/twiml">TwiML</a> and the <a href="/docs/api/twiml/sms/message">&lt;Message&gt;
+Verb</a>: We&#39;ll use TwiML to manage interactions
+initiated by the user via SMS.</li>
+<li><a href="/docs/api/rest/sending-sms">Messages Resource</a>: We will use the REST API
+to broadcast messages out to all subscribers.</li>
+</ul>
+<p>Let&#39;s get started! Click the right arrow to move on to the next step of the
+tutorial.</p>
+</div><div data-title="Subscriber" data-file="src/main/java/org/twilio/smsmarketing/models/Subscriber.java" class="step"><h2 id="subscriber">Subscriber</h2>
+<p>In order to send out marketing notifications to a subscriber, we need to
+provide the right model.</p>
+<ul>
+<li>The <code>phoneNumber</code> will allow the application to know where to send the
+notifications.</li>
+<li><code>subscribed</code> let the application to identify which subscribers are
+active, only an active subscriber will receive notifications.</li>
+</ul>
+<p><strong>See Also</strong></p>
+<ul>
+<li><a href="http://flywaydb.org/">Database Migrations with Flyway</a></li>
+</ul>
+</div><div data-title="Handling Incoming Messages" data-file="src/main/java/org/twilio/smsmarketing/TwilioServlet.java" data-highlight="38-44" class="step"><h2 id="handling-incoming-messages">Handling Incoming messages</h2>
+<p>This is the endpoint that will be called every time our application receives
+a message.</p>
+<p>We begin by getting the texter&#39;s phone number from the incoming <a href="/docs/api/twiml/sms/twilio_request">Twilio
+request</a>. Now, we need to find a
+<code>Subscriber</code> model with that phone number.</p>
+<p>If there&#39;s no subscriber with this phone number, we create one, save it, and
+respond with a message asking them to text &quot;subscribe&quot; to confirm that
+they want to receive messages from us.</p>
+<p>We&#39;ve created a <code>Subscriber</code> model to
+keep track of the people that want our messages, and saved them in the
+database when they text us for the first time.</p>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/docs/quickstart/java/twiml">Twilio TwiML</a></li>
+</ul>
+</div><div data-title="Manage Subscriptions" data-file="src/main/java/org/twilio/smsmarketing/TwilioServlet.java" data-highlight="63-71" class="step"><h2 id="manage-subscriptions">Manage Subscriptions</h2>
+<p>We want to provide the user with two SMS commands to manage their
+subscription status: <code>subscribe</code> and <code>unsubscribe</code>.  These commands will
+toggle a boolean flag for their <code>Subscriber</code> record in the database, and
+will determine whether or not they receive messages from our marketing
+campaign. Because we&#39;re not jerks, we don&#39;t opt them in automatically -
+rather, we have them confirm that they want to receive messages from us
+first.</p>
+<p>To make this happen, we will need to update the controller logic which
+handles the incoming text message to do a couple things:</p>
+<ul>
+<li>If the texter is a person already in the database, parse the message
+they sent to see if it&#39;s a command we recognize.</li>
+<li>If it is a <code>subscribe</code> or <code>unsubscribe</code> command, update their
+subscription status in the database.</li>
+<li>If it is a command we don&#39;t recognize, send them a message explaining
+available commands.</li>
+</ul>
+</div><div data-title="Sending Notifications" data-file="src/main/java/org/twilio/smsmarketing/NotificationsServlet.java" data-highlight="36-54" class="step"><h2 id="sending-notifications">Sending Notifications</h2>
+<p>On the server, we grab the message text and image URL, then loop through all
+Subscribers and call the method <code>send</code> on our <code>Sender</code> domain object
+to send the message.</p>
+<p>When the messages are on their way, we redirect back to the same form
+with a request custom <code>flash</code> attribute message containing feedback about
+the messaging attempt.</p>
+</div><div data-title="Send SMS or MMS Notifications" data-file="src/main/java/org/twilio/smsmarketing/lib/Sender.java" data-highlight="23-42" class="step"><h2 id="send-sms-or-mms-notifications">Send SMS or MMS Notifications</h2>
+<p>Now that we have a list of subscribers for our awesome SMS and MMS content,
+we need to provide our marketing team some kind of interface to send out
+messages.</p>
+<p>When the model object is loaded, it creates a <a href="https://github.com/twilio/twilio-java">Twilio REST API
+client</a> that it can use to send SMS and
+MMS messages. The client requires your Twilio account credentials (an
+account SID and auth token), which can be found <a href="/user/account">in the account
+portal</a>.</p>
+<p>Next all we need to do is to perform the following call
+<code>client.getAccount().getMessageFactory().create(params)</code> after having <em>build</em>
+our message params in order to send our message.</p>
+<p>The Twilio Message API call requires a &#39;From&#39; and &#39;To&#39; parameter, and
+either a &#39;Body&#39; or a &#39;MediaUrl&#39; attribute (or both).</p>
+</div><div data-title="Where to Next?" class="step"><h2 id="where-to-next-">Where to Next?</h2>
+<p>That&#39;s it! We&#39;ve just implemented a an opt-in process and an administrative
+interface to run an SMS and MMS marketing campaign. Now all you need is
+killer content to share with your users via text or MMS.</p>
+<p>If you&#39;re a Java Servlet developer working with Twilio, you might enjoy these
+other tutorials:</p>
+<p><a href="//www.twilio.com/docs/tutorials/walkthrough/server-notifications/java/servlets"><strong>SMS and MMS notifications</strong></a></p>
+<p>Implement server-side SMS notifications</p>
+<h3 id="did-this-help-">Did this help?</h3>
+<p>Thanks for checking out this tutorial! If you have any feedback to share
+with us, we&#39;d love to hear it. Tweet
+<a href="http://twitter.com/twilio">@twilio</a> to let us know what you think.</p>
+</div>
+<div class="saurus-files" style="display:none;"><textarea class="saurus-file" data-file="src/main/webapp/WEB-INF/web.xml" data-mode="xml">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KCjx3ZWItYXBwIHhtbG5zPSJodHRwOi8vamF2YS5zdW4uY29tL3htbC9ucy9qYXZhZWUiCiAgICAgICAgIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiCiAgICAgICAgIHhzaTpzY2hlbWFMb2NhdGlvbj0iaHR0cDovL2phdmEuc3VuLmNvbS94bWwvbnMvamF2YWVlIGh0dHA6Ly9qYXZhLnN1bi5jb20veG1sL25zL2phdmFlZS93ZWItYXBwXzNfMC54c2QiCiAgICAgICAgIHZlcnNpb249IjMuMCI+CiAgICA8d2VsY29tZS1maWxlLWxpc3Q+CiAgICAgICAgPHdlbGNvbWUtZmlsZT5ub3RpZmljYXRpb25zLmpzcDwvd2VsY29tZS1maWxlPgogICAgPC93ZWxjb21lLWZpbGUtbGlzdD4KCiAgICA8c2VydmxldD4KICAgICAgICA8c2VydmxldC1uYW1lPm5vdGlmaWNhdGlvbnM8L3NlcnZsZXQtbmFtZT4KICAgICAgICA8c2VydmxldC1jbGFzcz5vcmcudHdpbGlvLnNtc21hcmtldGluZy5Ob3RpZmljYXRpb25zU2VydmxldDwvc2VydmxldC1jbGFzcz4KICAgIDwvc2VydmxldD4KCiAgICA8c2VydmxldD4KICAgICAgICA8c2VydmxldC1uYW1lPnR3aWxpbzwvc2VydmxldC1uYW1lPgogICAgICAgIDxzZXJ2bGV0LWNsYXNzPm9yZy50d2lsaW8uc21zbWFya2V0aW5nLlR3aWxpb1NlcnZsZXQ8L3NlcnZsZXQtY2xhc3M+CiAgICA8L3NlcnZsZXQ+CgogICAgPHNlcnZsZXQtbWFwcGluZz4KICAgICAgICA8c2VydmxldC1uYW1lPm5vdGlmaWNhdGlvbnM8L3NlcnZsZXQtbmFtZT4KICAgICAgICA8dXJsLXBhdHRlcm4+L25vdGlmaWNhdGlvbnM8L3VybC1wYXR0ZXJuPgogICAgPC9zZXJ2bGV0LW1hcHBpbmc+CgogICAgPHNlcnZsZXQtbWFwcGluZz4KICAgICAgICA8c2VydmxldC1uYW1lPnR3aWxpbzwvc2VydmxldC1uYW1lPgogICAgICAgIDx1cmwtcGF0dGVybj4vbWVzc2FnZTwvdXJsLXBhdHRlcm4+CiAgICA8L3NlcnZsZXQtbWFwcGluZz4KPC93ZWItYXBwPg==</textarea>
+<textarea class="saurus-file" data-file="src/main/java/org/twilio/smsmarketing/models/Subscriber.java" data-mode="java">cGFja2FnZSBvcmcudHdpbGlvLnNtc21hcmtldGluZy5tb2RlbHM7CgppbXBvcnQgamF2YXgucGVyc2lzdGVuY2UuKjsKCkBTdXBwcmVzc1dhcm5pbmdzKCJ1bnVzZWQiKQpARW50aXR5CkBUYWJsZShuYW1lID0gInN1YnNjcmliZXJzIikKcHVibGljIGNsYXNzIFN1YnNjcmliZXIgewoKICAgIHB1YmxpYyBTdWJzY3JpYmVyKCkgewogICAgfQoKICAgIHB1YmxpYyBTdWJzY3JpYmVyKFN0cmluZyBwaG9uZU51bWJlcil7CiAgICAgICAgdGhpcy5waG9uZU51bWJlciA9IHBob25lTnVtYmVyOwogICAgICAgIHRoaXMuc3Vic2NyaWJlZCA9IGZhbHNlOwogICAgfQoKICAgIEBJZAogICAgQEdlbmVyYXRlZFZhbHVlKHN0cmF0ZWd5ID0gR2VuZXJhdGlvblR5cGUuSURFTlRJVFkpCiAgICBAQ29sdW1uKG5hbWUgPSAiaWQiKQogICAgcHJpdmF0ZSBpbnQgaWQ7CgogICAgQENvbHVtbihuYW1lID0gInBob25lX251bWJlciIpCiAgICBwcml2YXRlIFN0cmluZyBwaG9uZU51bWJlcjsKCiAgICBAQ29sdW1uKG5hbWUgPSAic3VzY3JpYmVkIikKICAgIHByaXZhdGUgYm9vbGVhbiBzdWJzY3JpYmVkOwoKCiAgICBwdWJsaWMgaW50IGdldElkKCkgewogICAgICAgIHJldHVybiBpZDsKICAgIH0KCiAgICBwdWJsaWMgdm9pZCBzZXRJZChpbnQgaWQpIHsKICAgICAgICB0aGlzLmlkID0gaWQ7CiAgICB9CgogICAgcHVibGljIFN0cmluZyBnZXRQaG9uZU51bWJlcigpIHsKICAgICAgICByZXR1cm4gcGhvbmVOdW1iZXI7CiAgICB9CgogICAgcHVibGljIHZvaWQgc2V0UGhvbmVOdW1iZXIoU3RyaW5nIHBob25lTnVtYmVyKSB7CiAgICAgICAgdGhpcy5waG9uZU51bWJlciA9IHBob25lTnVtYmVyOwogICAgfQoKICAgIHB1YmxpYyBib29sZWFuIGlzU3Vic2NyaWJlZCgpIHsKICAgICAgICByZXR1cm4gc3Vic2NyaWJlZDsKICAgIH0KCiAgICBwdWJsaWMgdm9pZCBzZXRTdWJzY3JpYmVkKGJvb2xlYW4gc3Vic2NyaWJlZCkgewogICAgICAgIHRoaXMuc3Vic2NyaWJlZCA9IHN1YnNjcmliZWQ7CiAgICB9Cn0K</textarea>
+<textarea class="saurus-file" data-file="src/main/java/org/twilio/smsmarketing/TwilioServlet.java" data-mode="java">cGFja2FnZSBvcmcudHdpbGlvLnNtc21hcmtldGluZzsKCmltcG9ydCBjb20udHdpbGlvLnNkay52ZXJicy4qOwppbXBvcnQgb3JnLnR3aWxpby5zbXNtYXJrZXRpbmcubW9kZWxzLlN1YnNjcmliZXI7CmltcG9ydCBvcmcudHdpbGlvLnNtc21hcmtldGluZy5yZXBvc2l0b3JpZXMuU3Vic2NyaWJlcnNSZXBvc2l0b3J5OwoKaW1wb3J0IGphdmF4LnNlcnZsZXQuU2VydmxldEV4Y2VwdGlvbjsKaW1wb3J0IGphdmF4LnNlcnZsZXQuaHR0cC5IdHRwU2VydmxldDsKaW1wb3J0IGphdmF4LnNlcnZsZXQuaHR0cC5IdHRwU2VydmxldFJlcXVlc3Q7CmltcG9ydCBqYXZheC5zZXJ2bGV0Lmh0dHAuSHR0cFNlcnZsZXRSZXNwb25zZTsKaW1wb3J0IGphdmEuaW8uSU9FeGNlcHRpb247CgpwdWJsaWMgY2xhc3MgVHdpbGlvU2VydmxldCBleHRlbmRzIEh0dHBTZXJ2bGV0IHsKCiAgICBwcml2YXRlIHN0YXRpYyBmaW5hbCBTdHJpbmcgU1VCU0NSSUJFX0NPTU1BTkQgPSAic3Vic2NyaWJlIjsKICAgIHByaXZhdGUgc3RhdGljIGZpbmFsIFN0cmluZyBVTlNVQlNDUklCRV9DT01NQU5EID0gInVuc3Vic2NyaWJlIjsKCiAgICBwcml2YXRlIGZpbmFsIFN1YnNjcmliZXJzUmVwb3NpdG9yeSByZXBvc2l0b3J5OwoKICAgIEBTdXBwcmVzc1dhcm5pbmdzKCJ1bnVzZWQiKQogICAgcHVibGljIFR3aWxpb1NlcnZsZXQoKSB7CiAgICAgICAgdGhpcyhuZXcgb3JnLnR3aWxpby5zbXNtYXJrZXRpbmcucmVwb3NpdG9yaWVzLlN1YnNjcmliZXJzUmVwb3NpdG9yeSgpKTsKICAgIH0KCiAgICBwdWJsaWMgVHdpbGlvU2VydmxldChvcmcudHdpbGlvLnNtc21hcmtldGluZy5yZXBvc2l0b3JpZXMuU3Vic2NyaWJlcnNSZXBvc2l0b3J5IHJlcG9zaXRvcnkpIHsKICAgICAgICB0aGlzLnJlcG9zaXRvcnkgPSByZXBvc2l0b3J5OwogICAgfQoKICAgIEBPdmVycmlkZQogICAgcHVibGljIHZvaWQgZG9Qb3N0KEh0dHBTZXJ2bGV0UmVxdWVzdCByZXF1ZXN0LCBIdHRwU2VydmxldFJlc3BvbnNlIHJlc3BvbnNlKSB0aHJvd3MgSU9FeGNlcHRpb24sIFNlcnZsZXRFeGNlcHRpb24gewoKICAgICAgICBTdHJpbmcgcGhvbmUgPSByZXF1ZXN0LmdldFBhcmFtZXRlcigiRnJvbSIpOwogICAgICAgIFN0cmluZyBib2R5ID0gcmVxdWVzdC5nZXRQYXJhbWV0ZXIoIkJvZHkiKTsKCiAgICAgICAgU3RyaW5nIG91dHB1dDsKCiAgICAgICAgdHJ5IHsKICAgICAgICAgICAgU3Vic2NyaWJlciBzdWJzY3JpYmVyID0gcmVwb3NpdG9yeS5maW5kQnlQaG9uZU51bWJlcihwaG9uZSk7CiAgICAgICAgICAgIGlmIChzdWJzY3JpYmVyID09IG51bGwpIHsKICAgICAgICAgICAgICAgIHN1YnNjcmliZXIgPSByZXBvc2l0b3J5LmNyZWF0ZShuZXcgU3Vic2NyaWJlcihwaG9uZSkpOwogICAgICAgICAgICAgICAgb3V0cHV0ID0gIlRoYW5rcyBmb3IgY29udGFjdGluZyBUV0JDISBUZXh0ICdzdWJzY3JpYmUnIGlmIHlvdSB3b3VsZCB0byByZWNlaXZlIHVwZGF0ZXMgdmlhIHRleHQgbWVzc2FnZS4iOwogICAgICAgICAgICB9IGVsc2UgewogICAgICAgICAgICAgICAgb3V0cHV0ID0gcHJvY2Vzc01lc3NhZ2UoYm9keSwgc3Vic2NyaWJlcik7CiAgICAgICAgICAgIH0KICAgICAgICB9IGNhdGNoIChFeGNlcHRpb24gZSkgewogICAgICAgICAgICBvdXRwdXQgPSAiU29tZXRoaW5nIHdlbnQgd3JvbmcuIFRyeSBhZ2Fpbi4iOwogICAgICAgIH0KCiAgICAgICAgVHdpTUxSZXNwb25zZSB0d2lNTFJlc3BvbnNlID0gbmV3IFR3aU1MUmVzcG9uc2UoKTsKICAgICAgICB0cnkgewogICAgICAgICAgICB0d2lNTFJlc3BvbnNlID0gdG9Ud2lNTFJlc3BvbnNlKG91dHB1dCk7CiAgICAgICAgfSBjYXRjaCAoVHdpTUxFeGNlcHRpb24gZSkgewogICAgICAgICAgICBlLnByaW50U3RhY2tUcmFjZSgpOwogICAgICAgIH0KCiAgICAgICAgcmVzcG9uc2Uuc2V0Q29udGVudFR5cGUoInRleHQveG1sIik7CiAgICAgICAgcmVzcG9uc2UuZ2V0V3JpdGVyKCkud3JpdGUodHdpTUxSZXNwb25zZS50b1hNTCgpKTsKICAgIH0KCiAgICBwcml2YXRlIFN0cmluZyBwcm9jZXNzTWVzc2FnZShTdHJpbmcgbWVzc2FnZSwgU3Vic2NyaWJlciBzdWJzY3JpYmVyKSB7CiAgICAgICAgU3RyaW5nIG91dHB1dCA9ICJTb3JyeSwgd2UgZG9uJ3QgcmVjb2duaXplIHRoYXQgY29tbWFuZC4gQXZhaWxhYmxlIGNvbW1hbmRzIGFyZTogJ3N1YnNjcmliZScgb3IgJ3Vuc3Vic2NyaWJlJy4iOwoKICAgICAgICBpZiAobWVzc2FnZS5zdGFydHNXaXRoKFR3aWxpb1NlcnZsZXQuU1VCU0NSSUJFX0NPTU1BTkQpIHx8IG1lc3NhZ2Uuc3RhcnRzV2l0aChUd2lsaW9TZXJ2bGV0LlVOU1VCU0NSSUJFX0NPTU1BTkQpKSB7CiAgICAgICAgICAgIHN1YnNjcmliZXIuc2V0U3Vic2NyaWJlZChtZXNzYWdlLnN0YXJ0c1dpdGgoVHdpbGlvU2VydmxldC5TVUJTQ1JJQkVfQ09NTUFORCkpOwogICAgICAgICAgICByZXBvc2l0b3J5LnVwZGF0ZShzdWJzY3JpYmVyKTsKICAgICAgICAgICAgaWYgKCFzdWJzY3JpYmVyLmlzU3Vic2NyaWJlZCgpKQogICAgICAgICAgICAgICAgb3V0cHV0ID0gIllvdSBoYXZlIHVuc3Vic2NyaWJlZCBmcm9tIG5vdGlmaWNhdGlvbnMuIFRlc3QgJ3N1YnNjcmliZScgdG8gc3RhcnQgcmVjZWl2aW5nIHVwZGF0ZXMgYWdhaW4iOwogICAgICAgICAgICBlbHNlCiAgICAgICAgICAgICAgICBvdXRwdXQgPSAiWW91IGFyZSBub3cgc3Vic2NyaWJlZCBmb3IgdXBkYXRlcy4iOwogICAgICAgIH0KICAgICAgICByZXR1cm4gb3V0cHV0OwogICAgfQoKICAgIHByaXZhdGUgVHdpTUxSZXNwb25zZSB0b1R3aU1MUmVzcG9uc2UoU3RyaW5nIG1lc3NhZ2VUZXh0KSB0aHJvd3MgVHdpTUxFeGNlcHRpb24gewogICAgICAgIE1lc3NhZ2UgbWVzc2FnZSA9IG5ldyBNZXNzYWdlKG1lc3NhZ2VUZXh0KTsKICAgICAgICBUd2lNTFJlc3BvbnNlIHJlc3BvbnNlID0gbmV3IFR3aU1MUmVzcG9uc2UoKTsKICAgICAgICByZXNwb25zZS5hcHBlbmQobWVzc2FnZSk7CiAgICAgICAgcmV0dXJuIHJlc3BvbnNlOwogICAgfQp9</textarea>
+<textarea class="saurus-file" data-file="src/main/java/org/twilio/smsmarketing/NotificationsServlet.java" data-mode="java">cGFja2FnZSBvcmcudHdpbGlvLnNtc21hcmtldGluZzsKCmltcG9ydCBvcmcudHdpbGlvLnNtc21hcmtldGluZy5saWIuUmVxdWVzdFBhcmFtZXRlcnNWYWxpZGF0b3I7CmltcG9ydCBvcmcudHdpbGlvLnNtc21hcmtldGluZy5saWIuU2VuZGVyOwppbXBvcnQgb3JnLnR3aWxpby5zbXNtYXJrZXRpbmcubW9kZWxzLlN1YnNjcmliZXI7CmltcG9ydCBvcmcudHdpbGlvLnNtc21hcmtldGluZy5yZXBvc2l0b3JpZXMuU3Vic2NyaWJlcnNSZXBvc2l0b3J5OwoKaW1wb3J0IGphdmF4LnNlcnZsZXQuU2VydmxldEV4Y2VwdGlvbjsKaW1wb3J0IGphdmF4LnNlcnZsZXQuaHR0cC5IdHRwU2VydmxldDsKaW1wb3J0IGphdmF4LnNlcnZsZXQuaHR0cC5IdHRwU2VydmxldFJlcXVlc3Q7CmltcG9ydCBqYXZheC5zZXJ2bGV0Lmh0dHAuSHR0cFNlcnZsZXRSZXNwb25zZTsKaW1wb3J0IGphdmEuaW8uSU9FeGNlcHRpb247CgpwdWJsaWMgY2xhc3MgTm90aWZpY2F0aW9uc1NlcnZsZXQgZXh0ZW5kcyBIdHRwU2VydmxldCB7CgogICAgcHJpdmF0ZSBmaW5hbCBTdWJzY3JpYmVyc1JlcG9zaXRvcnkgcmVwb3NpdG9yeTsKCiAgICBAU3VwcHJlc3NXYXJuaW5ncygidW51c2VkIikKICAgIHB1YmxpYyBOb3RpZmljYXRpb25zU2VydmxldCgpIHsKICAgICAgICB0aGlzKG5ldyBvcmcudHdpbGlvLnNtc21hcmtldGluZy5yZXBvc2l0b3JpZXMuU3Vic2NyaWJlcnNSZXBvc2l0b3J5KCkpOwogICAgfQoKICAgIHB1YmxpYyBOb3RpZmljYXRpb25zU2VydmxldChvcmcudHdpbGlvLnNtc21hcmtldGluZy5yZXBvc2l0b3JpZXMuU3Vic2NyaWJlcnNSZXBvc2l0b3J5IHJlcG9zaXRvcnkpIHsKICAgICAgICB0aGlzLnJlcG9zaXRvcnkgPSByZXBvc2l0b3J5OwogICAgfQoKICAgIEBPdmVycmlkZQogICAgcHVibGljIHZvaWQgZG9HZXQoSHR0cFNlcnZsZXRSZXF1ZXN0IHJlcXVlc3QsIEh0dHBTZXJ2bGV0UmVzcG9uc2UgcmVzcG9uc2UpIHRocm93cyBTZXJ2bGV0RXhjZXB0aW9uLCBJT0V4Y2VwdGlvbiB7CiAgICAgICAgcmVxdWVzdC5nZXRSZXF1ZXN0RGlzcGF0Y2hlcigiL25vdGlmaWNhdGlvbnMuanNwIikuZm9yd2FyZChyZXF1ZXN0LCByZXNwb25zZSk7CiAgICB9CgogICAgQE92ZXJyaWRlCiAgICBwdWJsaWMgdm9pZCBkb1Bvc3QoSHR0cFNlcnZsZXRSZXF1ZXN0IHJlcXVlc3QsIEh0dHBTZXJ2bGV0UmVzcG9uc2UgcmVzcG9uc2UpCiAgICAgICAgICAgIHRocm93cyBJT0V4Y2VwdGlvbiwgU2VydmxldEV4Y2VwdGlvbiB7CgogICAgICAgIFN0cmluZyBtZXNzYWdlID0gcmVxdWVzdC5nZXRQYXJhbWV0ZXIoIm1lc3NhZ2UiKTsKICAgICAgICBTdHJpbmcgaW1hZ2VVcmkgPSByZXF1ZXN0LmdldFBhcmFtZXRlcigiaW1hZ2VVcmwiKTsKCiAgICAgICAgaWYgKHZhbGlkYXRlUmVxdWVzdChyZXF1ZXN0KSkgewogICAgICAgICAgICB0cnkgewogICAgICAgICAgICAgICAgU2VuZGVyIHNlbmRlciA9IG5ldyBTZW5kZXIoKTsKICAgICAgICAgICAgICAgIEl0ZXJhYmxlPFN1YnNjcmliZXI+IHN1YnNjcmliZXJzID0gcmVwb3NpdG9yeS5maW5kQWxsU3Vic2NyaWJlZCgpOwogICAgICAgICAgICAgICAgZm9yIChTdWJzY3JpYmVyIHMgOiBzdWJzY3JpYmVycykgewogICAgICAgICAgICAgICAgICAgIHNlbmRlci5zZW5kKHMuZ2V0UGhvbmVOdW1iZXIoKSwgbWVzc2FnZSwgaW1hZ2VVcmkpOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9IGNhdGNoIChFeGNlcHRpb24gZSkgewogICAgICAgICAgICAgICAgcmVxdWVzdC5zZXRBdHRyaWJ1dGUoImZsYXNoIiwgIlNvbWV0aGluZyB3aGVuIHdyb25nLiIpOwogICAgICAgICAgICB9CgogICAgICAgICAgICByZXF1ZXN0LnNldEF0dHJpYnV0ZSgiZmxhc2giLCAiTWVzc2FnZXMgb24gdGhlaXIgd2F5ISIpOwogICAgICAgICAgICByZXF1ZXN0LmdldFJlcXVlc3REaXNwYXRjaGVyKCIvbm90aWZpY2F0aW9ucy5qc3AiKS5mb3J3YXJkKHJlcXVlc3QsIHJlc3BvbnNlKTsKICAgICAgICB9IGVsc2UgewogICAgICAgICAgICByZXF1ZXN0LmdldFJlcXVlc3REaXNwYXRjaGVyKCIvbm90aWZpY2F0aW9ucy5qc3AiKS5mb3J3YXJkKHJlcXVlc3QsIHJlc3BvbnNlKTsKICAgICAgICB9CiAgICB9CgogICAgcHJpdmF0ZSBib29sZWFuIHZhbGlkYXRlUmVxdWVzdChIdHRwU2VydmxldFJlcXVlc3QgcmVxdWVzdCkgewogICAgICAgIFJlcXVlc3RQYXJhbWV0ZXJzVmFsaWRhdG9yIHZhbGlkYXRvciA9IG5ldyBSZXF1ZXN0UGFyYW1ldGVyc1ZhbGlkYXRvcihyZXF1ZXN0KTsKCiAgICAgICAgcmV0dXJuIHZhbGlkYXRvci52YWxpZGF0ZVByZXNlbmNlKCJtZXNzYWdlIikgJiYgdmFsaWRhdG9yLnZhbGlkYXRlUHJlc2VuY2UoImltYWdlVXJsIik7CiAgICB9Cn0=</textarea>
+<textarea class="saurus-file" data-file="src/main/java/org/twilio/smsmarketing/lib/Sender.java" data-mode="java">cGFja2FnZSBvcmcudHdpbGlvLnNtc21hcmtldGluZy5saWI7CgppbXBvcnQgY29tLnR3aWxpby5zZGsuVHdpbGlvUmVzdENsaWVudDsKaW1wb3J0IGNvbS50d2lsaW8uc2RrLlR3aWxpb1Jlc3RFeGNlcHRpb247CmltcG9ydCBvcmcuYXBhY2hlLmh0dHAuTmFtZVZhbHVlUGFpcjsKaW1wb3J0IG9yZy5hcGFjaGUuaHR0cC5tZXNzYWdlLkJhc2ljTmFtZVZhbHVlUGFpcjsKCmltcG9ydCBqYXZhLnV0aWwuQXJyYXlMaXN0OwppbXBvcnQgamF2YS51dGlsLkxpc3Q7CgpwdWJsaWMgY2xhc3MgU2VuZGVyIHsKCiAgICBwcml2YXRlIGZpbmFsIFR3aWxpb1Jlc3RDbGllbnQgY2xpZW50OwoKICAgIHB1YmxpYyBTZW5kZXIoKSB7CiAgICAgICAgY2xpZW50ID0gbmV3IFR3aWxpb1Jlc3RDbGllbnQoQ29uZmlnLmdldEFjY291bnRTaWQoKSwgQ29uZmlnLmdldEF1dGhUb2tlbigpKTsKICAgIH0KCiAgICBwdWJsaWMgU2VuZGVyKFR3aWxpb1Jlc3RDbGllbnQgY2xpZW50KSB7CiAgICAgICAgdGhpcy5jbGllbnQgPSBjbGllbnQ7CiAgICB9CgogICAgcHVibGljIHZvaWQgc2VuZChTdHJpbmcgdG8sIFN0cmluZyBtZXNzYWdlLCBTdHJpbmcgaW1hZ2VVcmkpIHsKICAgICAgICBMaXN0PE5hbWVWYWx1ZVBhaXI+IHBhcmFtcyA9IGJ1aWxkUGFyYW1zKHRvLCBtZXNzYWdlLCBpbWFnZVVyaSk7CgogICAgICAgIHRyeSB7CiAgICAgICAgICAgIGNsaWVudC5nZXRBY2NvdW50KCkuZ2V0TWVzc2FnZUZhY3RvcnkoKS5jcmVhdGUocGFyYW1zKTsKICAgICAgICB9IGNhdGNoIChUd2lsaW9SZXN0RXhjZXB0aW9uIGV4Y2VwdGlvbikgewogICAgICAgICAgICBleGNlcHRpb24ucHJpbnRTdGFja1RyYWNlKCk7CiAgICAgICAgfQogICAgfQoKICAgIHByaXZhdGUgTGlzdDxOYW1lVmFsdWVQYWlyPiBidWlsZFBhcmFtcyhTdHJpbmcgdG8sIFN0cmluZyBtZXNzYWdlLCBTdHJpbmcgaW1hZ2VVcmkpIHsKICAgICAgICBMaXN0PE5hbWVWYWx1ZVBhaXI+IHBhcmFtcyA9IG5ldyBBcnJheUxpc3Q8PigpOwoKICAgICAgICBwYXJhbXMuYWRkKG5ldyBCYXNpY05hbWVWYWx1ZVBhaXIoIlRvIiwgdG8pKTsKICAgICAgICBwYXJhbXMuYWRkKG5ldyBCYXNpY05hbWVWYWx1ZVBhaXIoIkZyb20iLCBDb25maWcuZ2V0UGhvbmVOdW1iZXIoKSkpOwogICAgICAgIHBhcmFtcy5hZGQobmV3IEJhc2ljTmFtZVZhbHVlUGFpcigiQm9keSIsIG1lc3NhZ2UpKTsKICAgICAgICBwYXJhbXMuYWRkKG5ldyBCYXNpY05hbWVWYWx1ZVBhaXIoIk1lZGlhVXJsIiwgaW1hZ2VVcmkpKTsKCiAgICAgICAgcmV0dXJuIHBhcmFtczsKICAgIH0KfQ==</textarea>
+</div>
+</div><div class="saurus-overview"><ul></ul></div></div><div class="saurus-code"><div class="file-path"><span class="crumb-container"></span><i class="fa fa-fw fa-folder"></i></div><div class="saurus-editor"></div></div><div class="saurus-explorer"><div class="saurus-file-list"></div><a href="https://github.com/TwilioDevEd/marketing-notifications-servlets" target="_blank" class="explorer-get-code"> <i class="fa fa-lg fa-github-square"> </i>View Code on GitHub</a></div></div></div></div><script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script><script src="ace/ace.js"></script><script src="ace/theme-monokai.js"></script><script src="viewsaurus.js"></script></body></html>
