@@ -39,9 +39,36 @@ public class NotificationsServletTest extends BaseTwilioServletTest {
     @Test
     public void getMethod_RendersDefaultView() throws IOException, ServletException {
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
+
         NotificationsServlet servlet = new NotificationsServlet(subscribersRepository);
         servlet.doGet(request, response);
 
         verify(request).getRequestDispatcher("/notifications.jsp");
+    }
+
+    @Test
+    public void postMethodWithMissingMessage_RendersViewWithErrors() throws IOException, ServletException {
+        when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
+        when(request.getParameter("message")).thenReturn("");
+        when(request.getParameter("imageUrl")).thenReturn("");
+
+        NotificationsServlet servlet = new NotificationsServlet(subscribersRepository);
+        servlet.doPost(request, response);
+
+        verify(request).getRequestDispatcher("/notifications.jsp");
+        verify(request).setAttribute("messageError", "Message can't be blank");
+    }
+
+    @Test
+    public void postMethodWithMissingImageUrl_RendersViewWithErrors() throws IOException, ServletException {
+        when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
+        when(request.getParameter("message")).thenReturn("Blah");
+        when(request.getParameter("imageUrl")).thenReturn("");
+
+        NotificationsServlet servlet = new NotificationsServlet(subscribersRepository);
+        servlet.doPost(request, response);
+
+        verify(request).getRequestDispatcher("/notifications.jsp");
+        verify(request).setAttribute("imageUrlError", "Image Url can't be blank");
     }
 }

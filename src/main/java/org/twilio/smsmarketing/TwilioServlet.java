@@ -12,8 +12,8 @@ import java.io.IOException;
 
 public class TwilioServlet extends HttpServlet {
 
-    public static final String SUBSCRIBE_COMMAND = "subscribe";
-    public static final String UNSUBSCRIBE_COMMAND = "unsubscribe";
+    private static final String SUBSCRIBE_COMMAND = "subscribe";
+    private static final String UNSUBSCRIBE_COMMAND = "unsubscribe";
 
     private final SubscribersRepository repository;
 

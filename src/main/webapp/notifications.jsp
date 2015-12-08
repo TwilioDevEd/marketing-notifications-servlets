@@ -46,16 +46,17 @@
                 <div class="form-group">
                     <label for="message">Enter message: </label>
                     <input type="text" class="form-control" id="message" name="message" placeholder="New things are happening!">
+                    <span class="text-danger">${messageError}</span>
                 </div>
                 <div class="form-group">
                     <label for="imageUrl">Image URL: </label>
                     <input type="text" class="form-control" id="imageUrl" name="imageUrl" placeholder="http://fake.twilio.com/some_image.png">
+                    <span class="text-danger">${imageUrlError}</span>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Send Message</button>
             </form>
         </div>
-
     </div><!--/row-->
 
     <footer>

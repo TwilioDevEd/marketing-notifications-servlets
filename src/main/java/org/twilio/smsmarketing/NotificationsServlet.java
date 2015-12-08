@@ -1,5 +1,6 @@
 package org.twilio.smsmarketing;
 
+import org.twilio.smsmarketing.lib.RequestParametersValidator;
 import org.twilio.smsmarketing.lib.Sender;
 import org.twilio.smsmarketing.models.Subscriber;
 import org.twilio.smsmarketing.repositories.SubscribersRepository;
@@ -35,17 +36,27 @@ public class NotificationsServlet extends HttpServlet {
         String message = request.getParameter("message");
         String imageUri = request.getParameter("imageUrl");
 
-        try {
-            Sender sender = new Sender();
-            Iterable<Subscriber> subscribers = repository.findAllSubscribed();
-            for (Subscriber s : subscribers) {
-                sender.send(s.getPhoneNumber(), message, imageUri);
+        if (validateRequest(request)) {
+            try {
+                Sender sender = new Sender();
+                Iterable<Subscriber> subscribers = repository.findAllSubscribed();
+                for (Subscriber s : subscribers) {
+                    sender.send(s.getPhoneNumber(), message, imageUri);
+                }
+            } catch (Exception e) {
+                request.setAttribute("flash", "Something when wrong.");
             }
-        } catch (Exception e) {
-            request.setAttribute("flash", "Something when wrong.");
-        }
 
-        request.setAttribute("flash", "Messages on their way!");
-        request.getRequestDispatcher("/notifications.jsp").forward(request, response);
+            request.setAttribute("flash", "Messages on their way!");
+            request.getRequestDispatcher("/notifications.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/notifications.jsp").forward(request, response);
+        }
+    }
+
+    private boolean validateRequest(HttpServletRequest request) {
+        RequestParametersValidator validator = new RequestParametersValidator(request);
+
+        return validator.validatePresence("message") && validator.validatePresence("imageUrl");
     }
 }

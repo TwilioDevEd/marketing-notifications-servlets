@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 
 public abstract class BaseTwilioServletTest {
 
-    protected Document getDocument(String content) throws JDOMException, IOException {
+    protected Document getDocument(String content) throws JDOMException {
         return new SAXBuilder().build(new StringReader(content));
     }
 
