@@ -57,6 +57,6 @@ public class NotificationsServlet extends HttpServlet {
     private boolean validateRequest(HttpServletRequest request) {
         RequestParametersValidator validator = new RequestParametersValidator(request);
 
-        return validator.validatePresence("message") && validator.validatePresence("imageUrl");
+        return validator.validatePresence("message", "imageUrl");
     }
 }
