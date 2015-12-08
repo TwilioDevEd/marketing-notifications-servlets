@@ -17,7 +17,7 @@ public class NotificationsServlet extends HttpServlet {
 
     @SuppressWarnings("unused")
     public NotificationsServlet() {
-        this(new org.twilio.smsmarketing.repositories.SubscribersRepository());
+        this(new SubscribersRepository());
     }
 
     public NotificationsServlet(org.twilio.smsmarketing.repositories.SubscribersRepository repository) {
