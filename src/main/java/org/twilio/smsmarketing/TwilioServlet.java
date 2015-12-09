@@ -38,7 +38,7 @@ public class TwilioServlet extends HttpServlet {
             Subscriber subscriber = repository.findByPhoneNumber(phone);
             if (subscriber == null) {
                 repository.create(new Subscriber(phone));
-                output = "Thanks for contacting TWBC! Text 'subscribe' if you would to receive updates via text message.";
+                output = "Thanks for contacting TWBC! Text 'subscribe' if you would like to receive updates via text message.";
             } else {
                 output = processMessage(body, subscriber);
             }
@@ -64,7 +64,7 @@ public class TwilioServlet extends HttpServlet {
             subscriber.setSubscribed(message.startsWith(SUBSCRIBE_COMMAND));
             repository.update(subscriber);
             if (!subscriber.isSubscribed())
-                output = "You have unsubscribed from notifications. Test 'subscribe' to start receiving updates again";
+                output = "You have unsubscribed from notifications. Textt 'subscribe' to start receiving updates again";
             else
                 output = "You are now subscribed for updates.";
         }
