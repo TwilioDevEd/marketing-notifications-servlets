@@ -28,15 +28,15 @@ Use Twilio to create sms notifications to keep your subscribers in the loop.
     ```
     git clone git@github.com:TwilioDevEd/marketing-notifications-servlets.git
     ```
-
+    
+ _The application uses PostgreSQL as the persistence layer. If you
+ don't have it already, you should install it. The easiest way is by
+ using [Postgres.app](http://postgresapp.com/)._
+ 
 1. Create the database.
     ```bash
     $ createdb marketing_notifications
     ```
-
- _The application uses PostgreSQL as the persistence layer. If you
- don't have it already, you should install it. The easiest way is by
- using [Postgres.app](http://postgresapp.com/)._
 
 1. Edit the sample configuration file `.environment` to match your database and Twilio's configuration:
     ```
