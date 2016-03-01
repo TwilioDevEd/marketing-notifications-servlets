@@ -12,8 +12,8 @@ import java.io.IOException;
 
 public class TwilioServlet extends HttpServlet {
 
-    private final String SUBSCRIBE_COMMAND = "subscribe";
-    private final String UNSUBSCRIBE_COMMAND = "unsubscribe";
+    private final String SUBSCRIBE_COMMAND = "add";
+    private final String UNSUBSCRIBE_COMMAND = "remove";
 
     private final SubscribersRepository repository;
 
@@ -38,7 +38,7 @@ public class TwilioServlet extends HttpServlet {
             Subscriber subscriber = repository.findByPhoneNumber(phone);
             if (subscriber == null) {
                 repository.create(new Subscriber(phone));
-                output = "Thanks for contacting TWBC! Text 'subscribe' if you would like to receive updates via text message.";
+                output = "Thanks for contacting TWBC! Text 'add' if you would like to receive updates via text message.";
             } else {
                 output = processMessage(body, subscriber);
             }
@@ -58,13 +58,13 @@ public class TwilioServlet extends HttpServlet {
     }
 
     private String processMessage(String message, Subscriber subscriber) {
-        String output = "Sorry, we don't recognize that command. Available commands are: 'subscribe' or 'unsubscribe'.";
+        String output = "Sorry, we don't recognize that command. Available commands are: 'add' or 'remove'.";
 
         if (message.startsWith(SUBSCRIBE_COMMAND) || message.startsWith(UNSUBSCRIBE_COMMAND)) {
             subscriber.setSubscribed(message.startsWith(SUBSCRIBE_COMMAND));
             repository.update(subscriber);
             if (!subscriber.isSubscribed())
-                output = "You have unsubscribed from notifications. Textt 'subscribe' to start receiving updates again";
+                output = "You have unsubscribed from notifications. Text 'add' to start receiving updates again";
             else
                 output = "You are now subscribed for updates.";
         }
