@@ -10,37 +10,41 @@ Use Twilio to create sms notifications to keep your subscribers in the loop.
 
 1. You will need to configure Twilio to send requests to your application when SMS are received.
 
-   You will need to provision at least one Twilio number with sms capabilities so the application's users can make property reservations. You can buy a number [right here](https://www.twilio.com/user/account/phone-numbers/search). Once you have a number you need to configure your number to work with your application. Open [the number management page](https://www.twilio.com/user/account/phone-numbers/incoming) and open a number's configuration by clicking on it.
+   You will need to provision at least one Twilio number with sms capabilities so the application's users can make property reservations. You can buy a number [right here](https://www.twilio.com/user/account/phone-numbers/search). Once you have a number you need to configure it to work with your application. Open [the number management page](https://www.twilio.com/user/account/phone-numbers/incoming) and open a number's configuration by clicking on it.
 
-   Remember that the number where you change the _SMS webhook_ must be the same one you set on the `TwilioPhoneNumber` setting.
+   Remember the number you set on _SMS webhook_ must be the same one you configure on the `TwilioPhoneNumber` setting.
 
    ![Configure Voice](http://howtodocs.s3.amazonaws.com/twilio-number-config-all-med.gif)
 
-   To start using `ngrok` in our project you'll have execute to the following line in the _command prompt_:
+   To start using `ngrok` on our project you'll have to execute the following line in the _command prompt_
+
     ```
     ngrok http 8080 -host-header="localhost:8080"
     ```
 
-   Bear in mind that our endpoint is:
+   Keep in mind that our endpoint is
+
     ```
     http://<your-ngrok-subdomain>.ngrok.io/message
     ```
 
-1. Clone this repository and `cd` into its directory:
+1. Clone this repository and `cd` into it.
     ```
     git clone git@github.com:TwilioDevEd/marketing-notifications-servlets.git
     ```
-    
+
  _The application uses PostgreSQL as the persistence layer. If you
  don't have it already, you should install it. The easiest way is by
  using [Postgres.app](http://postgresapp.com/)._
- 
+
 1. Create the database.
+
     ```bash
     $ createdb marketing_notifications
     ```
 
-1. Edit the sample configuration file `.environment` to match your database and Twilio's configuration:
+1. Edit the sample configuration file `.environment` to match your database and Twilio's configuration.
+
     ```
   export DB_USERNAME=your_db_username
   export DB_PASSWORD=your_db_password
@@ -51,7 +55,7 @@ Use Twilio to create sms notifications to keep your subscribers in the loop.
     ```
 
    Once you have edited the `.environment` file, if you are using a UNIX operating system,
-   just use the `source` command to load the variables into your environment:
+   just use the `source` command to load the variables into your environment.
 
    ```bash
    $ source .environment
@@ -61,11 +65,13 @@ Use Twilio to create sms notifications to keep your subscribers in the loop.
    variables from the `.environment` file are loaded into your environment._
 
 1. Execute the migrations.
+
     ```bash
     $ ./gradlew flywayMigrate
     ```
 
 1. Run the application.
+
    ```bash
    $ ./gradew jettyRun
    ```
