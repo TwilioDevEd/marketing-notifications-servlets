@@ -51,7 +51,7 @@
 .step(
   data-title='Handling Incoming Messages',
   data-file='src/main/java/org/twilio/smsmarketing/TwilioServlet.java'
-  data-highlight='38-44')
+  data-highlight='41-47')
   :markdown
     ## Handling Incoming messages
 
@@ -75,7 +75,7 @@
 .step(
   data-title='Manage Subscriptions',
   data-file='src/main/java/org/twilio/smsmarketing/TwilioServlet.java'
-  data-highlight='61-71')
+  data-highlight='65-77')
   :markdown
     ## Manage Subscriptions
 
@@ -112,8 +112,7 @@
 
 .step(
   data-title='Send SMS or MMS Notifications',
-  data-file='src/main/java/org/twilio/smsmarketing/lib/Sender.java'
-   data-highlight='13-43')
+  data-file='src/main/java/org/twilio/smsmarketing/lib/Sender.java')
   :markdown
     ## Send SMS or MMS Notifications
 
@@ -122,8 +121,9 @@
     and MMS messages. The client requires your Twilio account credentials (an account
     SID and auth token), which can be found [in the account portal](/user/account).
 
-    Next all we need to do is `create` a message. The Twilio Message API call requires
-    a `From`, `To` and `Body` parameters. The `MediaUrl` is optional.
+    Next all we need to do is `create` a message using `MessageCreator` class.
+    The Twilio Message API call creator requires a `To`, `From` and `Body` parameters.
+    The `MediaUrl` is optional.
 
     **See Also**
     * [Twilio SMS and MMS Java Quickstart](//www.twilio.com/docs/quickstart/java/sms)
