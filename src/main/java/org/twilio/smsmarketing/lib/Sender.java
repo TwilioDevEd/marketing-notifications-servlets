@@ -1,19 +1,15 @@
 package org.twilio.smsmarketing.lib;
 
-import com.twilio.sdk.TwilioRestClient;
-import com.twilio.sdk.TwilioRestException;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.twilio.http.TwilioRestClient;
+import com.twilio.rest.api.v2010.account.MessageCreator;
+import com.twilio.type.PhoneNumber;
 
 public class Sender {
 
     private final TwilioRestClient client;
 
     public Sender() {
-        client = new TwilioRestClient(Config.getAccountSid(), Config.getAuthToken());
+        client = new TwilioRestClient.Builder(Config.getAccountSid(), Config.getAuthToken()).build();
     }
 
     public Sender(TwilioRestClient client) {
@@ -21,23 +17,11 @@ public class Sender {
     }
 
     public void send(String to, String message, String imageUri) {
-        List<NameValuePair> params = buildParams(to, message, imageUri);
-
-        try {
-            client.getAccount().getMessageFactory().create(params);
-        } catch (TwilioRestException exception) {
-            exception.printStackTrace();
-        }
+        new MessageCreator(
+                new PhoneNumber(to),
+                new PhoneNumber(Config.getPhoneNumber()),
+                message
+        ).setMediaUrl(imageUri).execute(client);
     }
 
-    private List<NameValuePair> buildParams(String to, String message, String imageUri) {
-        List<NameValuePair> params = new ArrayList<>();
-
-        params.add(new BasicNameValuePair("To", to));
-        params.add(new BasicNameValuePair("From", Config.getPhoneNumber()));
-        params.add(new BasicNameValuePair("Body", message));
-        params.add(new BasicNameValuePair("MediaUrl", imageUri));
-
-        return params;
-    }
 }
