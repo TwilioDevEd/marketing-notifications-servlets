@@ -1,6 +1,9 @@
 package org.twilio.smsmarketing;
 
-import com.twilio.sdk.verbs.*;
+import com.twilio.twiml.Body;
+import com.twilio.twiml.Message;
+import com.twilio.twiml.MessagingResponse;
+import com.twilio.twiml.TwiMLException;
 import org.twilio.smsmarketing.models.Subscriber;
 import org.twilio.smsmarketing.repositories.SubscribersRepository;
 
@@ -46,15 +49,17 @@ public class TwilioServlet extends HttpServlet {
             output = "Something went wrong. Try again.";
         }
 
-        TwiMLResponse twiMLResponse = new TwiMLResponse();
         try {
-            twiMLResponse = toTwiMLResponse(output);
-        } catch (TwiMLException e) {
-            e.printStackTrace();
-        }
+            MessagingResponse messagingResponse = new MessagingResponse.Builder()
+                    .message(new Message.Builder().body(new Body(output)).build())
+                    .build();
 
-        response.setContentType("text/xml");
-        response.getWriter().write(twiMLResponse.toXML());
+            response.setContentType("text/xml");
+
+            response.getWriter().write(messagingResponse.toXml());
+        } catch (TwiMLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String processMessage(String message, Subscriber subscriber) {
@@ -71,10 +76,4 @@ public class TwilioServlet extends HttpServlet {
         return output;
     }
 
-    private TwiMLResponse toTwiMLResponse(String messageText) throws TwiMLException {
-        Message message = new Message(messageText);
-        TwiMLResponse response = new TwiMLResponse();
-        response.append(message);
-        return response;
-    }
 }
