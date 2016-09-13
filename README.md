@@ -30,21 +30,10 @@ Use Twilio to create sms notifications to keep your subscribers in the loop.
     ```
     git clone git@github.com:TwilioDevEd/marketing-notifications-servlets.git
     ```
-    
- _The application uses PostgreSQL as the persistence layer. If you
- don't have it already, you should install it. The easiest way is by
- using [Postgres.app](http://postgresapp.com/)._
- 
-1. Create the database.
-    ```bash
-    $ createdb marketing_notifications
-    ```
 
-1. Edit the sample configuration file `.environment` to match your database and Twilio's configuration:
+1. Edit the sample configuration file `.environment` to match your database and Twilio's configuration.
+
     ```
-  export DB_USERNAME=your_db_username
-  export DB_PASSWORD=your_db_password
-  export JDBC_URL=jdbc:postgresql://localhost:5432/marketing_notifications
   export TWILIO_ACCOUNT_SID=your_account_sid
   export TWILIO_AUTH_TOKEN=your_account_token
   export TWILIO_PHONE_NUMBER=your_twilio_number
@@ -59,11 +48,6 @@ Use Twilio to create sms notifications to keep your subscribers in the loop.
 
    _If you are using a different operating system, make sure that all the
    variables from the `.environment` file are loaded into your environment._
-
-1. Execute the migrations.
-    ```bash
-    $ ./gradlew flywayMigrate
-    ```
 
 1. Run the application.
    ```bash
