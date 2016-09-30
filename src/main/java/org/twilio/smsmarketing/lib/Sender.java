@@ -21,7 +21,7 @@ public class Sender {
                 new PhoneNumber(to),
                 new PhoneNumber(Config.getPhoneNumber()),
                 message
-        ).setMediaUrl(imageUri).execute(client);
+        ).setMediaUrl(imageUri).create(client);
     }
 
 }
