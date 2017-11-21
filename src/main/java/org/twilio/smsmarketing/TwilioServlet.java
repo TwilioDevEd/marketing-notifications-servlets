@@ -1,9 +1,9 @@
 package org.twilio.smsmarketing;
 
-import com.twilio.twiml.Body;
-import com.twilio.twiml.Message;
 import com.twilio.twiml.MessagingResponse;
 import com.twilio.twiml.TwiMLException;
+import com.twilio.twiml.messaging.Body;
+import com.twilio.twiml.messaging.Message;
 import org.twilio.smsmarketing.models.Subscriber;
 import org.twilio.smsmarketing.repositories.SubscribersRepository;
 
@@ -51,7 +51,9 @@ public class TwilioServlet extends HttpServlet {
 
         try {
             MessagingResponse messagingResponse = new MessagingResponse.Builder()
-                    .message(new Message.Builder().body(new Body(output)).build())
+                    .message(new Message.Builder()
+                            .body(new Body.Builder(output).build())
+                            .build())
                     .build();
 
             response.setContentType("text/xml");
