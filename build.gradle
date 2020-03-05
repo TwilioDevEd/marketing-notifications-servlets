@@ -30,7 +30,7 @@ dependencies {
     compile 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.3'
     compile 'org.xerial:sqlite-jdbc:3.8.11.2'
 
-    compile 'com.twilio.sdk:twilio:7.0.0-rc-29'
+    compile 'com.twilio.sdk:twilio:7.47.6'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
