@@ -32,7 +32,7 @@ dependencies {
 
     compile 'com.twilio.sdk:twilio:7.0.0-rc-29'
 
-    testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.13.1'
     testCompile 'org.mockito:mockito-all:1.10.19'
     testCompile 'org.jdom:jdom:2.0.2'
     testCompile 'pl.pragmatists:JUnitParams:1.0.4'
