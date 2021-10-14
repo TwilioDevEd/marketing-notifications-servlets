@@ -1,6 +1,6 @@
 # SMS Notifications with Twilio and Java Servlets
 
-[![Build Status](https://travis-ci.org/TwilioDevEd/marketing-notifications-servlets.svg)](https://travis-ci.org/TwilioDevEd/marketing-notifications-servlets)
+[![Java Servlet CI](https://github.com/TwilioDevEd/marketing-notifications-servlets/actions/workflows/gradle.yml/badge.svg)](https://github.com/TwilioDevEd/marketing-notifications-servlets/actions/workflows/gradle.yml)
 
 Use Twilio to create sms notifications to keep your subscribers in the loop.
 
@@ -62,6 +62,12 @@ Use Twilio to create sms notifications to keep your subscribers in the loop.
 That's it!
 
 To let our Twilio Phone number use the callback endpoint we exposed, our development server will need to be publicly accessible. [We recommend using ngrok to solve this problem](https://www.twilio.com/blog/2015/09/6-awesome-reasons-to-use-ngrok-when-testing-webhooks.html).
+
+## Run the tests
+
+```bash
+./gradlew test
+```
 
 ## Meta
 
