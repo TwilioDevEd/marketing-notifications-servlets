@@ -6,7 +6,28 @@ Use Twilio to create sms notifications to keep your subscribers in the loop.
 
 [Read the full tutorial here](https://www.twilio.com/docs/tutorials/walkthrough/marketing-notifications/java/servlets)!
 
-## Local Development
+## Set up
+
+### Requirements
+
+- [Java Development Kit](https://adoptopenjdk.net/) version 11 or later.
+- [ngrok](https://ngrok.com)
+- [PostgreSQL](https://www.postgresql.org/)
+- A Twilio account - [sign up](https://www.twilio.com/try-twilio)
+
+### Twilio Account Settings
+
+This application should give you a ready-made starting point for writing your
+own appointment reminder application. Before we begin, we need to collect
+all the config values we need to run the application:
+
+| Config Value | Description                                                                                                                                                  |
+| :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Account Sid  | Your primary Twilio account identifier - find this [in the Console](https://www.twilio.com/console).                                                         |
+| Auth Token   | Used to authenticate - [just like the above, you'll find this here](https://www.twilio.com/console).                                                         |
+| Phone number | A Twilio phone number in [E.164 format](https://en.wikipedia.org/wiki/E.164) - you can [get one here](https://www.twilio.com/console/phone-numbers/incoming) |
+
+### Local development
 
 1. You will need to configure Twilio to send requests to your application when SMS are received.
 
@@ -33,28 +54,17 @@ Use Twilio to create sms notifications to keep your subscribers in the loop.
     git clone git@github.com:TwilioDevEd/marketing-notifications-servlets.git
     ```
 
-1. Edit the sample configuration file `.environment` to match your database and Twilio's configuration.
+1. Set your environment variables
 
+    ```bash
+    cp .env.example .env
     ```
-  export TWILIO_ACCOUNT_SID=your_account_sid
-  export TWILIO_AUTH_TOKEN=your_account_token
-  export TWILIO_PHONE_NUMBER=your_twilio_number
-    ```
-
-   Once you have edited the `.environment` file, if you are using a UNIX operating system,
-   just use the `source` command to load the variables into your environment.
-
-   ```bash
-   $ source .environment
-   ```
-
-   _If you are using a different operating system, make sure that all the
-   variables from the `.environment` file are loaded into your environment._
+   See [Twilio Account Settings](#twilio-account-settings) to locate the necessary environment variables.
 
 1. Run the application.
 
    ```bash
-   $ ./gradew jettyRun
+   ./gradew jettyRun
    ```
 
 1. Check it out at [http://localhost:8080](http://localhost:8080)
