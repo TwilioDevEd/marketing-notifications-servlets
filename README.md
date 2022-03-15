@@ -25,7 +25,7 @@ all the config values we need to run the application:
 | :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Account Sid  | Your primary Twilio account identifier - find this [in the Console](https://www.twilio.com/console).                                                         |
 | Auth Token   | Used to authenticate - [just like the above, you'll find this here](https://www.twilio.com/console).                                                         |
-| Phone number | A Twilio phone number in [E.164 format](https://en.wikipedia.org/wiki/E.164) - you can [get one here](https://www.twilio.com/console/phone-numbers/incoming) |
+| Phone number | A Twilio phone number in [E.164 format](https://www.twilio.com/docs/glossary/what-e164) - you can [get one here](https://www.twilio.com/console/phone-numbers/incoming) |
 
 ### Local development
 
@@ -35,7 +35,7 @@ all the config values we need to run the application:
 
    Remember the number you set on _SMS webhook_ must be the same one you configure on the `TwilioPhoneNumber` setting.
 
-   ![Configure Voice](http://howtodocs.s3.amazonaws.com/twilio-number-config-all-med.gif)
+   [Learn how to configure a Twilio phone number for Programmable SMS](https://support.twilio.com/hc/en-us/articles/223136047-Configure-a-Twilio-Phone-Number-to-Receive-and-Respond-to-Messages)
 
    To start using `ngrok` on our project you'll have to execute the following line in the _command prompt_
 
