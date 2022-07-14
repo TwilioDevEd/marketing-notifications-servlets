@@ -31,7 +31,7 @@ dependencies {
     compile 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.3'
     compile 'org.xerial:sqlite-jdbc:3.8.11.2'
 
-    compile 'com.twilio.sdk:twilio:7.17.0'
+    compile 'com.twilio.sdk:twilio:8.33.0'
     compile 'io.github.cdimascio:dotenv-java:2.2.0'
 
     testCompile 'junit:junit:4.12'
